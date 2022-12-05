@@ -3,9 +3,6 @@ const parseTextFileIntoArray = require("../utils/parseText");
 const rucksArray = parseTextFileIntoArray("./day3_input.txt");
 
 const priority = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const duplicates = [];
-
-let ruckCount = 1;
 
 // for (const ruck of rucksArray) {
 // 	const left = ruck.slice(0, ruck.length / 2);
