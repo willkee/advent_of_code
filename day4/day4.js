@@ -9,7 +9,7 @@ let total = 0;
 for (const pairs of day4_file) {
 	if (pairs) {
 		total++;
-		console.log(pairs);
+
 		const [pair1, pair2] = pairs.split(",");
 
 		const [p1_start_str, p1_end_str] = pair1.split("-");
@@ -44,4 +44,4 @@ for (const pairs of day4_file) {
 	}
 }
 
-console.log(counter, total);
+console.log(counter);
