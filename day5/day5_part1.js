@@ -38,12 +38,14 @@ for (const direction of directions) {
 			const toStack = keyToStack[Number(dest)];
 
 			toStack.push(fromStack.pop());
-
 			counter++;
 		}
 	}
 }
 
-console.log(
-	`${s1.pop()}${s2.pop()}${s3.pop()}${s4.pop()}${s5.pop()}${s6.pop()}${s7.pop()}${s8.pop()}${s9.pop()}`
-);
+let answer = "";
+for (const array of [s1, s2, s3, s4, s5, s6, s7, s8, s9]) {
+	answer += array[array.length - 1];
+}
+
+console.log(answer);

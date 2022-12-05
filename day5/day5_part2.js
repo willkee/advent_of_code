@@ -1,7 +1,6 @@
 const parseTextFileIntoArray = require("../utils/parseText");
 
 // input stacks
-
 const s1 = ["D", "T", "R", "B", "J", "L", "W", "G"];
 const s2 = ["S", "W", "C"];
 const s3 = ["R", "Z", "T", "M"];
@@ -40,8 +39,6 @@ for (const direction of directions) {
 			counter++;
 		}
 
-		console.log(tempArray);
-
 		while (tempArray.length) {
 			let tempElement = tempArray.shift();
 			keyToStack[dest].push(tempElement);
@@ -49,6 +46,9 @@ for (const direction of directions) {
 	}
 }
 
-console.log(
-	`${s1.pop()}${s2.pop()}${s3.pop()}${s4.pop()}${s5.pop()}${s6.pop()}${s7.pop()}${s8.pop()}${s9.pop()}`
-);
+let answer = "";
+for (const array of [s1, s2, s3, s4, s5, s6, s7, s8, s9]) {
+	answer += array[array.length - 1];
+}
+
+console.log(answer);
