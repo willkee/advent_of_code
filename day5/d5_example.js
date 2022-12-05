@@ -2,9 +2,9 @@ const parseTextFileIntoArray = require("../utils/parseText");
 
 // input stacks
 
-const s1 = ["Z", "N"];
-const s2 = ["M", "C", "D"];
-const s3 = ["P"];
+let s1 = ["Z", "N"];
+let s2 = ["M", "C", "D"];
+let s3 = ["P"];
 
 const keyToStack = {
 	1: s1,
@@ -16,19 +16,20 @@ const directions = parseTextFileIntoArray("./d5_example_input.txt");
 
 for (const direction of directions) {
 	if (direction) {
-		const [_move, quantity, _from, origin, _to, dest] =
-			direction.split(" ");
+		let [_move, quantity, _from, origin, _to, dest] = direction.split(" ");
 
 		let counter = 0;
-
-		console.log(quantity, origin, dest);
+		const tempArray = [];
 
 		while (counter < quantity) {
 			const el = keyToStack[origin].pop();
-			console.log(counter, el);
-			keyToStack[dest].push(el);
-
+			tempArray.unshift(el);
 			counter++;
+		}
+
+		while (tempArray.length) {
+			let tempElement = tempArray.shift();
+			keyToStack[dest].push(tempElement);
 		}
 	}
 }
