@@ -1,14 +1,14 @@
 const fs = require("fs");
 
 function parseTextFileIntoArray(inputPath) {
-	let test;
+	let file;
 	try {
-		test = fs.readFileSync(inputPath);
+		file = fs.readFileSync(inputPath);
 	} catch (err) {
-		console.error("Error has occurred.");
+		console.error("Error has occurred in parsing the text file.");
 	}
 
-	return test.toString().split("\n");
+	return file.toString().split("\n");
 }
 
 module.exports = parseTextFileIntoArray;
