@@ -1,5 +1,4 @@
-# advent_of_code
-Advent of Code 2022
+# Advent Of Code 2022
 
 In this repository are my solutions for Advent of Code 2022.
 
