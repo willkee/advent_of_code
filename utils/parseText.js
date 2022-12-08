@@ -8,7 +8,7 @@ function parseTextFileIntoArray(inputPath) {
 		console.error("Error has occurred in parsing the text file.");
 	}
 
-	return file.toString().split("\n");
+	return file.toString().trim().split("\n");
 }
 
 module.exports = parseTextFileIntoArray;
