@@ -4,13 +4,18 @@ const file = parseTextFileIntoArray("./d9_input.txt");
 
 const visited = new Set();
 
-const moveFollowerNodes = (node) => {
-	if (node.prevNodeTooFar()) {
-		const [xDiff, yDiff] = node.prevNodeTooFar();
+function moveFollowerNodes(node) {
+	const [xDiff, yDiff] = node.nodeXYDiff();
+	console.log(
+		`Start: x:${node.x} y:${node.y}`,
+		`xDiff: ${xDiff}, yDiff: ${yDiff}`
+	);
+	if (xDiff > 1 || xDiff < -1 || yDiff > 1 || yDiff < -1) {
 		node.x = xDiff === 0 ? node.x : node.x + Math.abs(xDiff) / xDiff;
 		node.y = yDiff === 0 ? node.y : node.y + Math.abs(yDiff) / yDiff;
+		console.log("end", node.x, node.y);
 	}
-};
+}
 
 class Node {
 	constructor(prev, next, x, y) {
@@ -24,29 +29,32 @@ class Node {
 		return `X${this.x}Y${this.y}`;
 	}
 
-	prevNodeTooFar() {
+	nodeXYDiff() {
 		if (this.prev) {
 			const xDiff = this.prev.x - this.x;
 			const yDiff = this.prev.y - this.y;
 
-			if (xDiff === 0 || xDiff === 1 || yDiff === 0 || yDiff === 1) {
-				return false;
-			} else {
-				return [xDiff, yDiff];
-			}
+			// console.log("CLASS METHOD", xDiff, yDiff);
+
+			return [xDiff, yDiff];
 		} else {
-			return null;
+			return [0, 0];
 		}
 	}
 }
 
 let head = new Node(null, null, 0, 0);
-let currentSetupLinkedList = head;
+let setupLinkedList = head;
 
+// for (let i = 0; i < 1; i++) {
+// 	const newNode = new Node(setupLinkedList, null, 0, 0);
+// 	setupLinkedList.next = newNode;
+// 	setupLinkedList = setupLinkedList.next;
+// }
 for (let i = 0; i < 9; i++) {
-	const newNode = new Node(currentSetupLinkedList, null, 0, 0);
-	currentSetupLinkedList.next = newNode;
-	currentSetupLinkedList = currentSetupLinkedList.next;
+	const newNode = new Node(setupLinkedList, null, 0, 0);
+	setupLinkedList.next = newNode;
+	setupLinkedList = setupLinkedList.next;
 }
 
 for (const movement of file) {
@@ -55,6 +63,7 @@ for (const movement of file) {
 	for (let i = 0; i < count; i++) {
 		let current = head;
 
+		console.log(`Moving ${direction}`);
 		if (direction === "L") {
 			head.x--;
 		} else if (direction === "R") {
@@ -66,11 +75,10 @@ for (const movement of file) {
 		}
 
 		while (current) {
-			if (!current.next) {
-				// at the tail
-				visited.add(current.getStringCoords());
-			}
+			if (!current.next) visited.add(current.getStringCoords());
 			moveFollowerNodes(current);
+			if (!current.next) visited.add(current.getStringCoords());
+
 			current = current.next;
 		}
 	}
