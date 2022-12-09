@@ -5,16 +5,16 @@ const file = parseTextFileIntoArray("./d9_input.txt");
 const visited = new Set();
 
 function moveFollowerNodes(node) {
+	if (!node) return;
+
 	const [xDiff, yDiff] = node.nodeXYDiff();
-	console.log(
-		`Start: x:${node.x} y:${node.y}`,
-		`xDiff: ${xDiff}, yDiff: ${yDiff}`
-	);
 	if (xDiff > 1 || xDiff < -1 || yDiff > 1 || yDiff < -1) {
 		node.x = xDiff === 0 ? node.x : node.x + Math.abs(xDiff) / xDiff;
 		node.y = yDiff === 0 ? node.y : node.y + Math.abs(yDiff) / yDiff;
-		console.log("end", node.x, node.y);
 	}
+
+	if (!node.next) visited.add(node.getStringCoords());
+	return moveFollowerNodes(node.next);
 }
 
 class Node {
@@ -34,8 +34,6 @@ class Node {
 			const xDiff = this.prev.x - this.x;
 			const yDiff = this.prev.y - this.y;
 
-			// console.log("CLASS METHOD", xDiff, yDiff);
-
 			return [xDiff, yDiff];
 		} else {
 			return [0, 0];
@@ -46,11 +44,6 @@ class Node {
 let head = new Node(null, null, 0, 0);
 let setupLinkedList = head;
 
-// for (let i = 0; i < 1; i++) {
-// 	const newNode = new Node(setupLinkedList, null, 0, 0);
-// 	setupLinkedList.next = newNode;
-// 	setupLinkedList = setupLinkedList.next;
-// }
 for (let i = 0; i < 9; i++) {
 	const newNode = new Node(setupLinkedList, null, 0, 0);
 	setupLinkedList.next = newNode;
@@ -63,7 +56,6 @@ for (const movement of file) {
 	for (let i = 0; i < count; i++) {
 		let current = head;
 
-		console.log(`Moving ${direction}`);
 		if (direction === "L") {
 			head.x--;
 		} else if (direction === "R") {
@@ -74,13 +66,7 @@ for (const movement of file) {
 			head.y--;
 		}
 
-		while (current) {
-			if (!current.next) visited.add(current.getStringCoords());
-			moveFollowerNodes(current);
-			if (!current.next) visited.add(current.getStringCoords());
-
-			current = current.next;
-		}
+		moveFollowerNodes(current);
 	}
 }
 

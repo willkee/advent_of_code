@@ -2,106 +2,74 @@ const parseTextFileIntoArray = require("../utils/parseText");
 const file = parseTextFileIntoArray("./d9_input.txt");
 // const file = parseTextFileIntoArray("./d9_example.txt");
 
-const matrix = require("./matrix");
-let headRow = 100;
-let headCol = 100;
+const visited = new Set();
 
-let tailRow = 100;
-let tailCol = 100;
+function moveFollowerNodes(node) {
+	if (!node) return;
 
-matrix[tailRow][tailCol] = 2;
+	const [xDiff, yDiff] = node.nodeXYDiff();
+	if (xDiff > 1 || xDiff < -1 || yDiff > 1 || yDiff < -1) {
+		node.x = xDiff === 0 ? node.x : node.x + Math.abs(xDiff) / xDiff;
+		node.y = yDiff === 0 ? node.y : node.y + Math.abs(yDiff) / yDiff;
+	}
+
+	if (!node.next) visited.add(node.getStringCoords());
+	return moveFollowerNodes(node.next);
+}
+
+class Node {
+	constructor(prev, next, x, y) {
+		this.prev = prev;
+		this.next = next;
+		this.x = x;
+		this.y = y;
+	}
+
+	getStringCoords() {
+		return `X${this.x}Y${this.y}`;
+	}
+
+	nodeXYDiff() {
+		if (this.prev) {
+			const xDiff = this.prev.x - this.x;
+			const yDiff = this.prev.y - this.y;
+
+			return [xDiff, yDiff];
+		} else {
+			return [0, 0];
+		}
+	}
+}
+
+let head = new Node(null, null, 0, 0);
+let setupLinkedList = head;
+
+const numKnots = 1;
+
+for (let i = 0; i < numKnots; i++) {
+	const newNode = new Node(setupLinkedList, null, 0, 0);
+	setupLinkedList.next = newNode;
+	setupLinkedList = setupLinkedList.next;
+}
 
 for (const movement of file) {
 	const [direction, count] = movement.split(" ");
 
-	if (direction === "L") {
-		for (let i = 0; i < count; i++) {
-			headCol--;
-			matrix[headRow][headCol] > 1 ? 2 : 1;
+	for (let i = 0; i < count; i++) {
+		let current = head;
 
-			if (Math.abs(headCol - tailCol) >= 2) {
-				if (headRow === tailRow) {
-					tailCol--;
-					matrix[tailRow][tailCol] = 2;
-				} else if (headRow < tailRow) {
-					tailCol--;
-					tailRow--;
-					matrix[tailRow][tailCol] = 2;
-				} else {
-					tailCol--;
-					tailRow++;
-					matrix[tailRow][tailCol] = 2;
-				}
-			}
+		if (direction === "L") {
+			head.x--;
+		} else if (direction === "R") {
+			head.x++;
+		} else if (direction === "U") {
+			head.y++;
+		} else if (direction === "D") {
+			head.y--;
 		}
-	} else if (direction === "R") {
-		for (let i = 0; i < count; i++) {
-			headCol++;
-			matrix[headRow][headCol] > 1 ? 2 : 1;
 
-			if (Math.abs(headCol - tailCol) >= 2) {
-				if (headRow === tailRow) {
-					tailCol++;
-					matrix[tailRow][tailCol] = 2;
-				} else if (headRow < tailRow) {
-					tailCol++;
-					tailRow--;
-					matrix[tailRow][tailCol] = 2;
-				} else {
-					tailCol++;
-					tailRow++;
-					matrix[tailRow][tailCol] = 2;
-				}
-			}
-		}
-	} else if (direction === "U") {
-		for (let i = 0; i < count; i++) {
-			headRow--;
-			matrix[headRow][headCol] > 1 ? 2 : 1;
-
-			if (Math.abs(headRow - tailRow) >= 2) {
-				if (headCol === tailCol) {
-					tailRow--;
-					matrix[tailRow][tailCol] = 2;
-				} else if (headCol < tailCol) {
-					tailCol--;
-					tailRow--;
-					matrix[tailRow][tailCol] = 2;
-				} else {
-					tailCol++;
-					tailRow--;
-					matrix[tailRow][tailCol] = 2;
-				}
-			}
-		}
-	} else if (direction === "D") {
-		for (let i = 0; i < count; i++) {
-			headRow++;
-			matrix[headRow][headCol] > 1 ? 2 : 1;
-
-			if (Math.abs(headRow - tailRow) >= 2) {
-				if (headCol === tailCol) {
-					tailRow++;
-					matrix[tailRow][tailCol] = 2;
-				} else if (headCol < tailCol) {
-					tailCol--;
-					tailRow++;
-					matrix[tailRow][tailCol] = 2;
-				} else {
-					tailCol++;
-					tailRow++;
-					matrix[tailRow][tailCol] = 2;
-				}
-			}
-		}
+		moveFollowerNodes(current);
 	}
 }
 
-let count = 0;
-for (let i = 0; i < matrix.length; i++) {
-	for (let j = 0; j < matrix[i].length; j++) {
-		const cell = matrix[i][j];
-		if (cell === 2) count++;
-	}
-}
-console.log(count);
+console.log(visited.size);
