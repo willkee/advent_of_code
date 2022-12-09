@@ -5,7 +5,7 @@ const matrix = [];
 for (const row of file) matrix.push(row.split(""));
 let counter = 0;
 
-// const matrix = [
+// const matrix2 = [
 // 	[3, 0, 3, 7, 3],
 // 	[2, 5, 5, 1, 2],
 // 	[6, 5, 3, 3, 2],
