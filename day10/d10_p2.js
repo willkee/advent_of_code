@@ -46,8 +46,8 @@ function part2() {
 part2();
 
 console.log(CRT.slice(0, 40).join(""));
-console.log(CRT.slice(41, 80).join(""));
-console.log(CRT.slice(81, 120).join(""));
-console.log(CRT.slice(121, 160).join(""));
-console.log(CRT.slice(161, 200).join(""));
-console.log(CRT.slice(201).join(""));
+console.log(CRT.slice(40, 80).join(""));
+console.log(CRT.slice(80, 120).join(""));
+console.log(CRT.slice(120, 160).join(""));
+console.log(CRT.slice(160, 200).join(""));
+console.log(CRT.slice(200).join(""));
