@@ -34,7 +34,6 @@ while (currentRound < 20) {
 			let item = current.items.shift();
 
 			inspectionCount[current.id]++;
-
 			// console.log(currentRound, "currBefore", item);
 
 			if (operator === "*") {

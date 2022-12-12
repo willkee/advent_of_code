@@ -1,12 +1,38 @@
-const { monkey0, monkey1, monkey2, monkey3 } = require("./d11_example");
+const {
+	monkey0,
+	monkey1,
+	monkey2,
+	monkey3,
+	monkey4,
+	monkey5,
+	monkey6,
+	monkey7,
+} = require("./d11_input");
 
-const operations = [monkey0, monkey1, monkey2, monkey3];
-let numMonkeys = 4;
+const operations = [
+	monkey0,
+	monkey1,
+	monkey2,
+	monkey3,
+	monkey4,
+	monkey5,
+	monkey6,
+	monkey7,
+];
+// const { monkey0, monkey1, monkey2, monkey3 } = require("./d11_example");
+
+// const operations = [monkey0, monkey1, monkey2, monkey3];
+
+// let numMonkeys = 4;
+let numMonkeys = 8;
+
+// const inspectionCount = [0, 0, 0, 0];
+const inspectionCount = [0, 0, 0, 0, 0, 0, 0, 0];
+
+let superModulo = 19 * 3 * 11 * 17 * 5 * 2 * 13 * 7;
+
 let currentRound = 0;
-
-const inspectionCount = [0, 0, 0, 0];
-
-while (currentRound < 20) {
+while (currentRound < 10000) {
 	let currMonkey = 0;
 	while (currMonkey < numMonkeys) {
 		let current = operations[currMonkey];
@@ -16,7 +42,7 @@ while (currentRound < 20) {
 			let item = current.items.shift();
 
 			inspectionCount[current.id]++;
-			console.log(currentRound, "currBefore", item);
+			// console.log(currentRound, "currBefore", item);
 
 			if (operator === "*") {
 				item *= num;
@@ -30,9 +56,9 @@ while (currentRound < 20) {
 				item = item * item;
 			}
 
-			console.log(currentRound, "currAfter", item);
+			// console.log(currentRound, "currAfter", item);
 
-			item = Math.floor(item / 3);
+			item = item % superModulo;
 
 			const [_modulo, modNum] = current.test;
 
@@ -45,12 +71,14 @@ while (currentRound < 20) {
 
 		currMonkey++;
 	}
-	console.log(currentRound, "ROUND");
 
 	currentRound++;
 }
 
+console.log(inspectionCount);
 const sortedCount = inspectionCount.sort((a, b) => b - a);
 
 const answer = sortedCount[0] * sortedCount[1];
 console.log(answer);
+
+// console.log(superModulo);
