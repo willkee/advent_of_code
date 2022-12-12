@@ -1,28 +1,10 @@
-const {
-	monkey0,
-	monkey1,
-	monkey2,
-	monkey3,
-	monkey4,
-	monkey5,
-	monkey6,
-	monkey7,
-} = require("./d11_input");
+const { monkey0, monkey1, monkey2, monkey3 } = require("./d11_example");
 
-const operations = [
-	monkey0,
-	monkey1,
-	monkey2,
-	monkey3,
-	monkey4,
-	monkey5,
-	monkey6,
-	monkey7,
-];
-let numMonkeys = 8;
+const operations = [monkey0, monkey1, monkey2, monkey3];
+let numMonkeys = 4;
 let currentRound = 0;
 
-const inspectionCount = [0, 0, 0, 0, 0, 0, 0, 0];
+const inspectionCount = [0, 0, 0, 0];
 
 while (currentRound < 20) {
 	let currMonkey = 0;
@@ -34,8 +16,7 @@ while (currentRound < 20) {
 			let item = current.items.shift();
 
 			inspectionCount[current.id]++;
-
-			// console.log(currentRound, "currBefore", item);
+			console.log(currentRound, "currBefore", item);
 
 			if (operator === "*") {
 				item *= num;
@@ -49,7 +30,7 @@ while (currentRound < 20) {
 				item = item * item;
 			}
 
-			// console.log(currentRound, "currAfter", item);
+			console.log(currentRound, "currAfter", item);
 
 			item = Math.floor(item / 3);
 
@@ -64,6 +45,7 @@ while (currentRound < 20) {
 
 		currMonkey++;
 	}
+	console.log(currentRound, "ROUND");
 
 	currentRound++;
 }
